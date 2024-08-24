@@ -5,11 +5,19 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageIcon>icon_cli.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="Commands\" />
     <Folder Include="Parsing\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\Resources\icon_cli.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
