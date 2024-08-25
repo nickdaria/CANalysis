@@ -10,9 +10,11 @@ namespace CANalysis.Models
     public class CANFrame
     {
         public ushort ID { get; set; }
-        public byte[] Data { get; set; } = { };
+        public ushort Bus { get; set; } = 0;
+        public byte[] Data { get; set; } = [];
         public ushort Length { get; set; }
         public FrameFlags Flags { get; set; }
+        public SignalDirection Direction { get; set; }
         public ulong TimestampMicros { get; set; }
 
         [StructLayout(LayoutKind.Explicit)]
@@ -21,7 +23,6 @@ namespace CANalysis.Models
             [FieldOffset(0)] public bool Extended;
             [FieldOffset(1)] public bool FlexibleDataRateFrame;
             [FieldOffset(2)] public bool RemoteRequest;
-            [FieldOffset(3)] public bool DirectionTx;
         }
     }
 }

@@ -9,7 +9,7 @@ namespace CANalysis.Filtering
 {
     public class CANFrameFilter
     {
-        private List<Func<CANFrame, bool>> _filters = new List<Func<CANFrame, bool>>();
+        private readonly List<Func<CANFrame, bool>> _filters = [];
 
         // Filter by specific CAN IDs
         public CANFrameFilter ByID(Func<ushort, bool> idPredicate)

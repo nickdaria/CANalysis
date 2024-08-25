@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace CANalysis.Models
 {
-    internal class AnalysisResult
+    public enum SignalDirection
     {
-    }
+        Tx,
+        Rx
+    };
 }

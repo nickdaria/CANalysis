@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <Folder Include="Analysis\" />
-    <Folder Include="Parsing\" />
   </ItemGroup>
 
   <ItemGroup>

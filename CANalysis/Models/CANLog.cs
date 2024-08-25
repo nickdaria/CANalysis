@@ -9,6 +9,6 @@ namespace CANalysis.Models
     public class CANLog
     {
         public DateTime log_start;
-        public List<CANFrame> frames = new();
+        public List<CANFrame> frames = [];
     }
 }
