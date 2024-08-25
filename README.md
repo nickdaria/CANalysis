@@ -1,19 +1,19 @@
-# CANalysis
 <img src="Resources/icon.png" width="10%">
 
-Easy-to-use C# library and accompanying CLI utility for parsing, filtering, analysis, and exporting of CAN data
+# CANalysis
+Easy-to-use C# library for parsing, filtering, analysis, and export of CAN data.
 
-## Models
-- `CANFrame`
-- `CANLog`
-- `UDSTransmission`
+> [!NOTE]  
+> CANalysis is still undergoing early development. It is subject to change for upcoming features like DBC functionality.
 
 ## Parsing
-- File-based log loading from File stream
-- Programatic frame intake from program
+CAN data can be fed into the library programatically, or via parsers for popular formats:
+- SavvyCAN GVRET CSV
+
+*more formats coming soon*
 
 ## Filtering
-Lambda filters easily slim down to the desired data set for analysis
+Lambda filters can be used to easily slim down to the desired data set for analysis
 ```C#
 // Filtering by ID and data length
 var filteredFrames = new CANFrameFilter()
@@ -28,5 +28,5 @@ Various built-in analysis tools are provided for common use-case scenarios
 - `BitsChangedBetweenLogs` finds masks of bits that change between seperate logs, but ignores bits that are changing during the logs. Useful for narrowing the search for broadcast data that can be manipulated and seperated by logs such as gear.
 - `ISOTPScan` finds frames that might match the ISO-TP standard (single-frame & multi-frame) and tries to interpret the full transmissions.
 
-## Exporting
-Export analysis results or filtered log file data to a file or as an object for a program to use.
+## Export
+Parsed or filtered/analyzed output can be used programatically, or exported to a file in any format that CANalysis can parse. If no operations are made, this means CANalysis can effecively be used as a file format converter.
