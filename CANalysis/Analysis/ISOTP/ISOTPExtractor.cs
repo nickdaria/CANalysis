@@ -24,57 +24,68 @@ namespace CANalysis.Analysis.ISOTP
                     continue;
                 }
 
-                if (frameType == ISOTPFrame.FrameType.SingleFrame)
+                //  Handle based on type
+                switch (frameType)
                 {
-                    // Create a new transmission for single frame
-                    var transmission = new ISOTPTransmission
+                    case ISOTPFrame.FrameType.SingleFrame:
                     {
-                        DirectionTx = frame.Direction == SignalDirection.Tx,
-                        SendingID = frame.ID,
-                        TimestampMicros = frame.TimestampMicros,
-                        Data = ISOTPFrame.GetSingleFrameData(frame),
-                        Length = ISOTPFrame.GetSingleFrameLength(frame),
-                        Frames = new List<CANFrame> { frame }
-                    };
-
-                    transmissions.Add(transmission);
-                }
-                else if (frameType == ISOTPFrame.FrameType.FirstFrame)
-                {
-                    // Create a new transmission for first frame
-                    var transmission = new ISOTPTransmission
-                    {
-                        DirectionTx = frame.Direction == SignalDirection.Tx,
-                        SendingID = frame.ID,
-                        TimestampMicros = frame.TimestampMicros,
-                        Data = ISOTPFrame.GetFirstFrameData(frame),
-                        Length = ISOTPFrame.GetFirstFrameLength(frame),
-                        Frames = new List<CANFrame> { frame }
-                    };
-
-                    transmissions.Add(transmission);
-                }
-                else if (frameType == ISOTPFrame.FrameType.ConsecutiveFrame)
-                {
-                    var lastTransmission = transmissions.LastOrDefault(t => t.SendingID == frame.ID);
-
-                    if (lastTransmission != null)
-                    {
-                        int remainingBytes = (int)(lastTransmission.Length - lastTransmission.Data.Length);
-
-                        if (remainingBytes > 0)
+                        var transmission = new ISOTPTransmission
                         {
-                            var consecutiveData = ISOTPFrame.GetConsecutiveFrameData(frame);
-                            lastTransmission.Data = lastTransmission.Data
-                                .Concat(consecutiveData.Take(remainingBytes))
-                                .ToArray();
+                            Direction = frame.Direction,
+                            SendingID = frame.ID,
+                            TimestampMicros = frame.TimestampMicros,
+                            Data = ISOTPFrame.GetSingleFrameData(frame),
+                            Length = ISOTPFrame.GetSingleFrameLength(frame),
+                            Frames = new List<CANFrame> { frame }
+                        };
 
-                            lastTransmission.Frames.Add(frame);
-                        }
+                        transmissions.Add(transmission);
+                        break;
                     }
-                    else
+                    case ISOTPFrame.FrameType.FirstFrame:
                     {
-                        throw new InvalidOperationException("Consecutive frame received without a preceding First Frame.");
+                        // Create a new transmission for first frame
+                        var transmission = new ISOTPTransmission
+                        {
+                            Direction = frame.Direction,
+                            SendingID = frame.ID,
+                            TimestampMicros = frame.TimestampMicros,
+                            Data = ISOTPFrame.GetFirstFrameData(frame),
+                            Length = ISOTPFrame.GetFirstFrameLength(frame),
+                            Frames = new List<CANFrame> { frame }
+                        };
+
+                        transmissions.Add(transmission);
+                        break;
+                    }
+                    case ISOTPFrame.FrameType.ConsecutiveFrame:
+                    {
+                        //  Append to last transmission on consecutive frames
+                        var lastTransmission = transmissions.LastOrDefault(t => t.SendingID == frame.ID);
+
+                        if (lastTransmission != null)
+                        {
+                            int remainingBytes = (int)(lastTransmission.Length - lastTransmission.Data.Length);
+
+                            if (remainingBytes > 0)
+                            {
+                                var consecutiveData = ISOTPFrame.GetConsecutiveFrameData(frame);
+                                lastTransmission.Data = lastTransmission.Data
+                                    .Concat(consecutiveData.Take(remainingBytes))
+                                    .ToArray();
+
+                                lastTransmission.Frames.Add(frame);
+                            }
+                        }
+                        else
+                        {
+                            throw new InvalidOperationException("Consecutive frame received without a preceding first frame.");
+                        }
+                        break;
+                    }
+                    default:
+                    {
+                        break;
                     }
                 }
             }

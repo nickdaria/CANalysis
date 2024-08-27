@@ -56,7 +56,7 @@ namespace CANalysis_CLI
                 for (int i = 0; i < isotp.Count; i++)
                 {
                     var transmission = isotp[i];
-                    writer.WriteLine($"Direction: {transmission.DirectionTx}, Sending ID: 0x{transmission.SendingID:X4}, Recieving ID: 0x{transmission.RecievingID:X4}, #Frames: {transmission.Frames.Count}, Bytes: {transmission.Data.Length}, Data: {BitConverter.ToString(transmission.Data)}");
+                    writer.WriteLine($"Direction: {transmission.Direction}, Sending ID: 0x{transmission.SendingID:X4}, Recieving ID: 0x{transmission.RecievingID:X4}, #Frames: {transmission.Frames.Count}, Bytes: {transmission.Length}, Data: {BitConverter.ToString(transmission.Data)}");
                 }
             }
 
