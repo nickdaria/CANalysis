@@ -12,12 +12,15 @@ using System.Threading.Tasks;
 
 namespace CANalysis.Models
 {
-    public class UDSTransmission
+    public class ISOTPTransmission
     {
         public bool DirectionTx { get; set; }
-        public ushort? SendingID { get; set; }
-        public ushort RecievingID { get; set; }
+        public UInt32? SendingID { get; set; }
+        public UInt32 RecievingID { get; set; }
         public byte[] Data { get; set; } = { };
-        public ushort Length { get; set; }
+        public List<CANFrame> Frames { get; set; }
+        public uint Length { get; set; }
+        public ulong TimestampMicros { get; set; }
+
     }
 }

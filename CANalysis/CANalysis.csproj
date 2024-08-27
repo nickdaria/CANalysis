@@ -8,10 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Analysis\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="..\Resources\icon.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>

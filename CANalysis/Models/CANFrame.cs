@@ -9,7 +9,7 @@ namespace CANalysis.Models
 {
     public class CANFrame
     {
-        public ushort ID { get; set; }
+        public UInt32 ID { get; set; }
         public ushort Bus { get; set; } = 0;
         public byte[] Data { get; set; } = [];
         public ushort Length { get; set; }

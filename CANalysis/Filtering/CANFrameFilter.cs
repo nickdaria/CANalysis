@@ -12,7 +12,7 @@ namespace CANalysis.Filtering
         private readonly List<Func<CANFrame, bool>> _filters = [];
 
         // Filter by specific CAN IDs
-        public CANFrameFilter ByID(Func<ushort, bool> idPredicate)
+        public CANFrameFilter ByID(Func<UInt32, bool> idPredicate)
         {
             _filters.Add(frame => idPredicate(frame.ID));
             return this;

@@ -4,6 +4,7 @@ using CANalysis.Parsing;
 using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 /*
  *  Nick Daria 2024
@@ -18,10 +19,10 @@ namespace CANalysis_CLI
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("File Test");
+            Console.WriteLine("UDS Test");
 
-            string path = @"I:\My Drive\Q50 CAN Reverse Engineering\can-logs\q50-ecutek-nodongle\wake-from-sleep-no-acc-or-ignition.csv";
-            string savePath = @"I:\My Drive\Q50 CAN Reverse Engineering\can-logs\q50-ecutek-nodongle\wake-from-sleep-no-acc-or-ignition-PARSED.csv";
+            string path = @"I:\My Drive\Q50 CAN Reverse Engineering\can-logs\EcuTek flashing logs day 2\stock-to-stock very fast was likely just checking hashes.csv";
+            string savePath = Path.Combine(Path.GetDirectoryName(path), "ISO-LOG.txt");
 
             //  Parse the file at path
             ParserBase parser = new GVRET_CSV();
@@ -32,37 +33,36 @@ namespace CANalysis_CLI
                 log = parser.Parse(fileStream);
             }
 
-            //  List all CAN frames in the log
-            foreach (var frame in log.frames)
-            {
-                PrintCANFrame(frame);
-            }
-
             //  Create a filtered log that only includes frames with ID 0x7E0
-            var filter = new CANFrameFilter().ByID(id => id == 0x541);
+            var filter = new CANFrameFilter().ByID(id => id == 0x7E0 || id == 0x7E8);
             var filteredFrames = filter.Apply(log.frames).ToList();
 
-            //  List all CAN frames in the filtered log
-            Console.WriteLine("\nFiltered CAN Frames (ID == 0x541):");
-            foreach (var frame in filteredFrames)
+            CANLog filteredLog = new CANLog
             {
-                PrintCANFrame(frame);
-            }
+                log_start = log.log_start,
+                frames = filteredFrames
+            };
 
-            //  Save the unfiltered log to savePath
-            if(File.Exists(savePath))
+
+            List<ISOTPTransmission> isotp = CANalysis.Analysis.ISOTP.ISOTPExtractor.ReadTransmissions(filteredLog);
+
+            if (File.Exists(savePath))
             {
                 File.Delete(savePath);
             }
             using (var fileStream = File.Create(savePath))
+            using (var writer = new StreamWriter(fileStream, Encoding.ASCII))
             {
-                parser.Encode(fileStream, log);
+                for (int i = 0; i < isotp.Count; i++)
+                {
+                    var transmission = isotp[i];
+                    writer.WriteLine($"Direction: {transmission.DirectionTx}, Sending ID: 0x{transmission.SendingID:X4}, Recieving ID: 0x{transmission.RecievingID:X4}, #Frames: {transmission.Frames.Count}, Bytes: {transmission.Data.Length}, Data: {BitConverter.ToString(transmission.Data)}");
+                }
             }
 
             //  Print the start time
             Console.WriteLine($"Log Start Time: {log.log_start}");
-
-            Console.WriteLine($"Unfiltered log saved to: {savePath}");
+            Console.WriteLine($"Parsed ISOTP saved to: {savePath}");
             Console.ReadLine();
         }
 

@@ -153,9 +153,9 @@ namespace CANalysis.Parsing
             return ulong.Parse(timestamp.TrimStart('-'));
         }
 
-        private static ushort ParseHexID(string id)
+        private static UInt32 ParseHexID(string id)
         {
-            return ushort.Parse(id, System.Globalization.NumberStyles.HexNumber);
+            return UInt32.Parse(id, System.Globalization.NumberStyles.HexNumber);
         }
 
         private static SignalDirection ParseDirection(string direction)

@@ -24,9 +24,14 @@ var filteredFrames = new CANFrameFilter()
 
 ## Analysis
 Various built-in analysis tools are provided for common use-case scenarios
-- `IDComparisonBetweenLogs` finds IDs isolated to specific logs, and IDs shared among all logs
-- `BitsChangedBetweenLogs` finds masks of bits that change between seperate logs, but ignores bits that are changing during the logs. Useful for narrowing the search for broadcast data that can be manipulated and seperated by logs such as gear.
-- `ISOTPScan` finds frames that might match the ISO-TP standard (single-frame & multi-frame) and tries to interpret the full transmissions.
+<!-- - `IDComparisonBetweenLogs` finds IDs isolated to specific logs, and IDs shared among all logs
+- `BitsChangedBetweenLogs` finds masks of bits that change between seperate logs, but ignores bits that are changing during the logs. Useful for narrowing the search for broadcast data that can be manipulated and seperated by logs such as gear. -->
+- `ISOTP.ReadTransmissions` identifies and parses all valid ISO-TP communications
+    - Single-frame & multi-frame
+    - Ordered by first frame, can handle multiple concurrent transmissions
+    - *It is suggested to filter input to known UDS/ISO-TP IDs to prevent false positives*
+
+*more broadcast bit-based tools coming soon*
 
 ## Export
 Parsed or filtered/analyzed output can be used programatically, or exported to a file in any format that CANalysis can parse. If no operations are made, this means CANalysis can effecively be used as a file format converter.
