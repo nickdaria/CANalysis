@@ -19,33 +19,35 @@ namespace CANalysis_CLI
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("UDS Test");
+            Console.WriteLine("CANalysis Testbed");
 
+            //  Initialize vars
             string path = @"I:\My Drive\Q50 CAN Reverse Engineering\can-logs\EcuTek flashing logs day 2\stock-to-stock very fast was likely just checking hashes.csv";
             string savePath = Path.Combine(Path.GetDirectoryName(path), "ISO-LOG.txt");
 
-            //  Parse the file at path
             ParserBase parser = new GVRET_CSV();
             CANLog log;
 
+            //  Parse raw CAN log
             using (var fileStream = File.OpenRead(path))
             {
                 log = parser.Parse(fileStream);
             }
 
-            //  Create a filtered log that only includes frames with ID 0x7E0
+            //  Filter to ECM & Tester (ECM) messages
             var filter = new CANFrameFilter().ByID(id => id == 0x7E0 || id == 0x7E8);
-            var filteredFrames = filter.Apply(log.frames).ToList();
+            IEnumerable<CANFrame> filteredFrames = filter.Apply(log);
 
             CANLog filteredLog = new CANLog
             {
                 log_start = log.log_start,
-                frames = filteredFrames
+                frames = filteredFrames.ToList()
             };
 
-
+            //  Parse out ISO-TP transmissions
             List<ISOTPTransmission> isotp = CANalysis.Analysis.ISOTP.ISOTPExtractor.ReadTransmissions(filteredLog);
 
+            //  Save output to a human readable log file
             if (File.Exists(savePath))
             {
                 File.Delete(savePath);
