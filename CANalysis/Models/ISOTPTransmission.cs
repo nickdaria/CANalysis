@@ -15,8 +15,8 @@ namespace CANalysis.Models
     public class ISOTPTransmission
     {
         public SignalDirection Direction { get; set; }
-        public UInt32? SendingID { get; set; }
-        public UInt32 RecievingID { get; set; }
+        public uint? SendingID { get; set; }
+        public uint RecievingID { get; set; }
         public byte[] Data { get; set; } = { };
         public List<CANFrame> Frames { get; set; }
         public uint Length { get; set; }

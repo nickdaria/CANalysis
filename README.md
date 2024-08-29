@@ -1,10 +1,10 @@
 <img src="Resources/icon.png" width="10%">
 
 # CANalysis
-Easy-to-use C# library for parsing, filtering, analysis, and export of CAN data.
+Easy-to-use C# library for parsing, filtering, analysis, and export of CAN & CAN-FD data including transport protocols like ISO-TP and UDS.
 
 > [!NOTE]  
-> CANalysis is still undergoing early development. It is subject to change for upcoming features like DBC functionality.
+> CANalysis is still undergoing early development. It is subject to agiile breaking changes for upcoming features like DBC functionality.
 
 ## Parsing
 CAN data can be fed into the library programatically, or via parsers for popular formats:
