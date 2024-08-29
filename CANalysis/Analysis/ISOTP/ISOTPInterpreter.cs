@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CANalysis.Analysis.ISOTP
 {
-    public static class ISOTPExtractor
+    public static class ISOTPInterpreter
     {
         public static List<ISOTPTransmission> ReadTransmissions(CANLog log)
         {

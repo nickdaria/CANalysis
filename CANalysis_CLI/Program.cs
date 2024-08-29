@@ -45,7 +45,7 @@ namespace CANalysis_CLI
             };
 
             //  Parse out ISO-TP transmissions
-            List<ISOTPTransmission> isotp = CANalysis.Analysis.ISOTP.ISOTPExtractor.ReadTransmissions(filteredLog);
+            List<ISOTPTransmission> isotp = CANalysis.Analysis.ISOTP.ISOTPInterpreter.ReadTransmissions(filteredLog);
 
             //  Save output to a human readable log file
             if (File.Exists(savePath))
