@@ -19,7 +19,7 @@ namespace CANalysis.Models.UDS.Standards
         Negative_Response
     };
 
-    public enum Services
+    public enum SID
     {
         //  Diagnostic and Communications Management
         Diagnostic_Session_Control = 0x10,

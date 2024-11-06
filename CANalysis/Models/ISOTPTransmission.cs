@@ -18,7 +18,7 @@ namespace CANalysis.Models
         public uint? SendingID { get; set; }
         public uint RecievingID { get; set; }
         public byte[] Data { get; set; } = { };
-        public List<CANFrame> Frames { get; set; }
+        public List<CANFrame> Frames { get; set; } = new();
         public uint Length { get; set; }
         public ulong TimestampMicros { get; set; }
 
